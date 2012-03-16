@@ -18,13 +18,13 @@
 	String appKey = LinkedInUtil.getAppId(company.getCompanyId());
 	boolean isUserLoggedIn = false;
 	
-	if(request.getSession().getAttribute(
-			LinkedInWebKeys.LINKEDIN_ACCESS_TOKEN) == null){
-		linkedInAuth = false;
-	}
-		
 	if(user != null && !user.isDefaultUser()){
 		isUserLoggedIn = true;	
+		
+		if(request.getSession().getAttribute(
+				LinkedInWebKeys.LINKEDIN_ACCESS_TOKEN) == null){
+			linkedInAuth = false;
+		}
 	}
 %>
 

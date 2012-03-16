@@ -4,11 +4,16 @@
 
 package com.liferay.portal.linkedin;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import javax.portlet.PortletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.IOUtils;
 import org.scribe.builder.api.DefaultApi10a;
 import org.scribe.builder.api.LinkedInApi;
 import org.scribe.model.OAuthConfig;
@@ -152,25 +157,21 @@ public class LinkedInUtil {
 		return null;
 	}
 
-	public static String getProfileImageURL(PortletRequest portletRequest) {
-		HttpServletRequest request = PortalUtil
-				.getHttpServletRequest(portletRequest);
-
-		request = PortalUtil.getOriginalServletRequest(request);
-
-		HttpSession session = request.getSession();
-
-		String linkedInId = (String) session
-				.getAttribute(LinkedInWebKeys.LINKEDIN_USER_ID);
-
-		if (Validator.isNull(linkedInId)) {
-			return null;
+	public static byte[] getProfileImage(String pictureUrl) throws IOException {
+		InputStream imageStream = null;
+		byte[] byteArray = null;
+		try {
+			URL url = new URL(pictureUrl);
+			imageStream = url.openStream();
+			byteArray = IOUtils.toByteArray(imageStream);
+		} finally {
+			try {
+				if (imageStream != null)
+					imageStream.close();
+			} catch (Exception e) {
+			}
 		}
-
-		/*JSONObject jsonObject = getGraphResources(companyId, token,
-				"id,picture-url");*/
-
-		return "";
+		return byteArray;
 	}
 
 	public static JSONObject getAuth2Token(HttpServletRequest request)
@@ -183,19 +184,23 @@ public class LinkedInUtil {
 			if (cookie.getName().equals(
 					"linkedin_oauth_" + LinkedInUtil.getAppId(companyId))) {
 
-				System.out.println("cookies = cookie=" + cookie.getName()
-						+ ", value=" + cookie.getValue());
+				if (_log.isDebugEnabled())
+					_log.debug("getGraphResources cookies = cookie="
+							+ cookie.getName() + ", value=" + cookie.getValue());
 
 				try {
 					String json = HttpUtil.decodeURL(cookie.getValue());
 					System.out.println("cookies = json=" + json);
+
+					if (_log.isDebugEnabled())
+						_log.debug("getGraphResources json=" + json);
 
 					JSONObject jsonObject = JSONFactoryUtil
 							.createJSONObject(json);
 					return jsonObject;
 
 				} catch (Exception e) {
-					System.out.println(e);
+					_log.error(e);
 				}
 				return null;
 			}

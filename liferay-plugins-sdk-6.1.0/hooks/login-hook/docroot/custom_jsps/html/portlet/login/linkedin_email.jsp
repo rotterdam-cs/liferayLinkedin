@@ -6,10 +6,12 @@
  */
 --%>
 
+<%@page import="com.liferay.portal.kernel.util.Validator"%>
 <%@ include file="/html/portlet/login/init.jsp" %>
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+String profileURL = (String)request.getSession().getAttribute("pictureUrl");
 %>
  
 <portlet:actionURL var="linkedInAction" secure="true">
@@ -22,6 +24,13 @@ String redirect = ParamUtil.getString(request, "redirect");
 	<liferay-ui:error exception="<%= UserEmailAddressException.class %>" message="please-enter-a-valid-email-address" />
 	
 	<aui:fieldset>
+
+		<% if(Validator.isNotNull(profileURL)){ %>
+		<img width="100" height="100"
+			 alt="Rajesh Portal" class="photo" 
+			 src="<%=profileURL%>">
+		<% } %>
+			
 		<aui:input label="linkedin-email-address" name="emailAddress" showRequiredLabel="<%= false %>" type="text" value="">
 			<aui:validator name="required" />
 		</aui:input>

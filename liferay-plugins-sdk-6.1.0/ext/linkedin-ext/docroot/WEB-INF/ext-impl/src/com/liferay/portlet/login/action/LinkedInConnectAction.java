@@ -4,6 +4,9 @@
 
 package com.liferay.portlet.login.action;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -14,6 +17,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -89,8 +93,9 @@ public class LinkedInConnectAction extends PortletAction {
 		String emailAddress = ParamUtil
 				.getString(actionRequest, "emailAddress");
 
-		_log.debug("processAction - emailAddress=" + emailAddress
-				+ ", companyId=" + companyId);
+		if (_log.isDebugEnabled())
+			_log.debug("processAction - emailAddress=" + emailAddress
+					+ ", companyId=" + companyId);
 
 		// if linkedin access token already exists in session
 		Token accessToken = (Token) request.getSession().getAttribute(
@@ -101,8 +106,9 @@ public class LinkedInConnectAction extends PortletAction {
 					LinkedInWebKeys.LINKEDIN_ACCESS_TOKEN, accessToken);
 		}
 
-		_log.info("processAction - accessToken=" + accessToken.getToken()
-				+ ", accessSecret=" + accessToken.getSecret());
+		if (_log.isDebugEnabled())
+			_log.debug("processAction - accessToken=" + accessToken.getToken()
+					+ ", accessSecret=" + accessToken.getSecret());
 
 		// read linkedin member id from rest json request
 		JSONObject jsonObject = LinkedInUtil
@@ -112,14 +118,17 @@ public class LinkedInConnectAction extends PortletAction {
 		if (jsonObject != null) {
 
 			String memberId = jsonObject.getString("id");
-			_log.debug("processAction - memberId=" + memberId);
+			if (_log.isDebugEnabled())
+				_log.debug("processAction - memberId=" + memberId);
 
 			if (Validator.isNotNull(emailAddress)) {
 				try {
 					validateEmailAddress(companyId, emailAddress);
 
 					User addUser = addUser(companyId, emailAddress, jsonObject);
-					_log.debug("processAction - addUser=" + addUser.getUserId());
+					if (_log.isDebugEnabled())
+						_log.debug("processAction - addUser="
+								+ addUser.getUserId());
 
 					try {
 						UserLinkedInLocalServiceUtil.findByL_C_Id(companyId,
@@ -134,7 +143,9 @@ public class LinkedInConnectAction extends PortletAction {
 							addUser.getUserId());
 
 				} catch (Exception e) {
+
 					_log.error("Email validation failed");
+
 					if (e instanceof UserEmailAddressException) {
 						SessionErrors
 								.add(actionRequest, e.getClass().getName());
@@ -168,7 +179,8 @@ public class LinkedInConnectAction extends PortletAction {
 					updateUser(userLinkedId.getUserId(), jsonObject);
 
 					// redirect to autologin hook /c/portal/login
-					_log.debug("redirect to autologin hook /c/portal/login");
+					if (_log.isDebugEnabled())
+						_log.debug("redirect to autologin hook /c/portal/login");
 
 					// update user
 					request.getSession().setAttribute(
@@ -185,6 +197,11 @@ public class LinkedInConnectAction extends PortletAction {
 					// something went wrong
 					_log.error(e);
 				}
+			}
+
+			String pictureUrl = jsonObject.getString("pictureUrl");
+			if (Validator.isNotNull(pictureUrl)) {
+				request.getSession().setAttribute("pictureUrl", pictureUrl);
 			}
 		}
 	}
@@ -210,30 +227,6 @@ public class LinkedInConnectAction extends PortletAction {
 		}
 	}
 
-	/**
-	 * Validate user emailAddress
-	 * 
-	 * @param companyId
-	 * @param emailAddress
-	 * @throws SystemException
-	 * @throws PortalException
-	 */
-	private void validateEmailAddress(long companyId, String emailAddress)
-			throws PortalException, SystemException {
-		if (!Validator.isEmailAddress(emailAddress)) {
-			throw new UserEmailAddressException();
-		} else {
-			try {
-				long userIdByEmailAddress = UserLocalServiceUtil
-						.getUserIdByEmailAddress(companyId, emailAddress);
-				if (userIdByEmailAddress > 0)
-					throw new UserEmailAddressException();
-			} catch (NoSuchUserException e) {
-				// _log.error(e);
-			}
-		}
-	}
-
 	private User addUser(long companyId, String emailAddress,
 			JSONObject jsonObject) throws Exception {
 
@@ -246,8 +239,11 @@ public class LinkedInConnectAction extends PortletAction {
 
 		String comments = jsonObject.getString("summary");
 
+		String pictureUrl = jsonObject.getString("pictureUrl");
+
 		_log.debug("addUser - firstName=" + firstName + ", lastName="
-				+ lastName + ", middleName=" + middleName + ", jobTitle=");
+				+ lastName + ", middleName=" + middleName + ", jobTitle="
+				+ jobTitle + ", pictureUrl=" + pictureUrl);
 
 		long creatorUserId = 0;
 		boolean autoPassword = true;
@@ -291,6 +287,13 @@ public class LinkedInConnectAction extends PortletAction {
 			UserLocalServiceUtil.updateUser(user);
 		}
 
+		try {
+			byte[] image = LinkedInUtil.getProfileImage(pictureUrl);
+			UserLocalServiceUtil.updatePortrait(user.getUserId(), image);
+		} catch (Exception e) {
+			_log.error(e.getMessage());
+		}
+
 		return user;
 
 	}
@@ -310,11 +313,13 @@ public class LinkedInConnectAction extends PortletAction {
 				.getString("maidenName") : StringPool.BLANK;
 		String jobTitle = jsonObject.getString("headline") != null ? jsonObject
 				.getString("headline") : StringPool.BLANK;
-
+		String pictureUrl = jsonObject.getString("pictureUrl");
 		String comments = jsonObject.getString("summary");
 
-		_log.debug("updateUser - firstName=" + firstName + ", lastName="
-				+ lastName + ", middleName=" + middleName + ", jobTitle=");
+		if (_log.isDebugEnabled())
+			_log.debug("addUser - firstName=" + firstName + ", lastName="
+					+ lastName + ", middleName=" + middleName + ", jobTitle="
+					+ jobTitle + ", pictureUrl=" + pictureUrl);
 
 		if (isEquals(firstName, user.getFirstName())
 				&& isEquals(lastName, user.getLastName())
@@ -322,7 +327,9 @@ public class LinkedInConnectAction extends PortletAction {
 				&& isEquals(jobTitle, user.getJobTitle())
 				&& isEquals(comments, user.getComments())) {
 
-			_log.debug("updateUser - all property are in sync");
+			if (_log.isDebugEnabled())
+				_log.info("updateUser - all property are in sync");
+
 			return;
 		}
 
@@ -334,7 +341,38 @@ public class LinkedInConnectAction extends PortletAction {
 
 		UserLocalServiceUtil.updateUser(user);
 
+		try {
+			byte[] image = LinkedInUtil.getProfileImage(pictureUrl);
+			UserLocalServiceUtil.updatePortrait(user.getUserId(), image);
+		} catch (Exception e) {
+			_log.error(e.getMessage());
+		}
+
 		_log.info("user sync successfully with linkedin data");
+	}
+
+	/**
+	 * Validate user emailAddress
+	 * 
+	 * @param companyId
+	 * @param emailAddress
+	 * @throws SystemException
+	 * @throws PortalException
+	 */
+	private static void validateEmailAddress(long companyId, String emailAddress)
+			throws PortalException, SystemException {
+		if (!Validator.isEmailAddress(emailAddress)) {
+			throw new UserEmailAddressException();
+		} else {
+			try {
+				long userIdByEmailAddress = UserLocalServiceUtil
+						.getUserIdByEmailAddress(companyId, emailAddress);
+				if (userIdByEmailAddress > 0)
+					throw new UserEmailAddressException();
+			} catch (NoSuchUserException e) {
+				// _log.error(e);
+			}
+		}
 	}
 
 	public static boolean isEquals(String a, String b) {
@@ -345,60 +383,5 @@ public class LinkedInConnectAction extends PortletAction {
 
 	private static Log _log = LogFactoryUtil
 			.getLog(LinkedInConnectAction.class);
-
-	/*protected void setFacebookCredentials(HttpSession session, long companyId,
-			String token) throws Exception {
-
-		System.out.println("setFacebookCredentials - start");
-		
-				JSONObject jsonObject = LinkedInUtil
-						.getGraphResources(companyId, "/me", token,
-								"id,first-name,last-name,headline,summary,date-of-birth,picture-url");
-
-				System.out.println("setFacebookCredentials - jsonObject=" + jsonObject);
-
-				if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)) {
-					return;
-				}
-
-				if (LinkedInUtil.isVerifiedAccountRequired(companyId)
-						&& !jsonObject.getBoolean("verified")) {
-					return;
-				}
-
-				User user = null;
-
-				long linkedId = jsonObject.getLong("id");
-				if (linkedId > 0) {
-					session.setAttribute(LinkedInWebKeys.LINKEDIN_USER_ID,
-							String.valueOf(linkedId));
-				}
-
-				String emailAddress = jsonObject.getString("email");
-				if ((user == null) && Validator.isNotNull(emailAddress)) {
-					session.setAttribute(LinkedInWebKeys.LINKEDIN_USER_EMAIL_ADDRESS,
-							emailAddress);
-					try {
-						user = UserLocalServiceUtil.getUserByEmailAddress(companyId,
-								emailAddress);
-					} catch (NoSuchUserException nsue) {
-					}
-				}
-
-				System.out.println("setFacebookCredentials - email="
-						+ jsonObject.getString("email") + ", firstName="
-						+ jsonObject.getString("first_name") + ", lastName="
-						+ jsonObject.getString("last_name") + ", id="
-						+ jsonObject.getLong("id"));
-
-				if (user != null) {
-
-					// updateUser(user, jsonObject);
-				} else {
-					// addUser(session, companyId, jsonObject);
-				}
-		
-		System.out.println("setFacebookCredentials - end");
-	}*/
 
 }
