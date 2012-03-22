@@ -1,1 +1,0 @@
-Liferay.Service.register("Liferay.Service.Portal", "com.liferay.portal.linkedin.service");

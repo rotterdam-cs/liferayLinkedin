@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.liferay.portal.linkedin.service.UserLinkedInLocalService" class="com.liferay.portal.linkedin.service.impl.UserLinkedInLocalServiceImpl" />
-	<bean id="com.liferay.portal.linkedin.service.UserLinkedInLocalServiceUtil" class="com.liferay.portal.linkedin.service.UserLinkedInLocalServiceUtil">
-		<property name="service" ref="com.liferay.portal.linkedin.service.UserLinkedInLocalService" />
-	</bean>
-	<bean id="com.liferay.portal.linkedin.service.persistence.UserLinkedInPersistence" class="com.liferay.portal.linkedin.service.persistence.UserLinkedInPersistenceImpl" parent="basePersistence" />
-</beans>
