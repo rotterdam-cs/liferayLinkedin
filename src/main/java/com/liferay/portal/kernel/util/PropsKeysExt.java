@@ -27,4 +27,12 @@ public interface PropsKeysExt {
 
     public static final String LINKEDIN_CONNECT_AUTH_ENABLED = "linkedin.connect.auth.enabled";
 
+
+    public static final String TWITTER_CONNECT_APP_ID = "twitter.connect.app.id";
+
+    public static final String TWITTER_CONNECT_APP_SECRET = "twitter.connect.app.secret";
+
+    public static final String TWITTER_REDIRECT_URL = "twitter.redirect.url";
+
+    public static final String TWITTER_CONNECT_AUTH_ENABLED = "twitter.connect.auth.enabled";
 }

@@ -9,38 +9,36 @@ import com.google.code.linkedinapi.schema.Person;
 import com.google.code.linkedinapi.schema.SiteStandardProfileRequest;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.linkedin.LinkedInConnectUtil;
+import com.liferay.portal.kernel.struts.BaseStrutsPortletAction;
+import com.liferay.portal.kernel.struts.StrutsPortletAction;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.struts.PortletAction;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.login.util.LoginUtil;
 import oauth.signpost.OAuth;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.apache.struts.taglib.tiles.ComponentConstants;
+import org.apache.struts.tiles.ComponentContext;
 
 import javax.portlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 /**
  * @author V. Koshelenko
  */
-public class EnterEmailAction extends PortletAction {
-
-    public static final String DEFAULT_PASSWORD = "1111";
-    public static final String JOB_COMPANY_SEPARATOR = " at ";
+public class LinkedInAuthAction extends BaseStrutsPortletAction {
 
     @Override
-    public void processAction(ActionMapping mapping, ActionForm form, PortletConfig portletConfig, ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
+    public void processAction(StrutsPortletAction originalStrutsPortletAction, PortletConfig portletConfig, ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
 
         if (ENTER_EMAIL_ACTION.equals(actionRequest.getParameter(ACTION))) {
 
@@ -60,7 +58,7 @@ public class EnterEmailAction extends PortletAction {
 
             String linkedInProfileId = StringUtils.substringAfter(profileRequestUrl, "key=");
             if (linkedInProfileId.contains("&"))
-                linkedInProfileId = StringUtils.substringBefore(linkedInProfileId, "&");
+                linkedInProfileId = StringUtils.substringBefore (linkedInProfileId, "&");
 
             User userToLogin;
             try {
@@ -98,7 +96,6 @@ public class EnterEmailAction extends PortletAction {
                 long[] userGroupIds = {};
                 boolean sendEmail = false;
                 ServiceContext serviceContext = new ServiceContext();
-
 
                 try{
 
@@ -157,10 +154,8 @@ public class EnterEmailAction extends PortletAction {
         }
     }
 
-
     @Override
-    public ActionForward render(ActionMapping mapping, ActionForm form, PortletConfig portletConfig, RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
-
+    public String render(StrutsPortletAction originalStrutsPortletAction, PortletConfig portletConfig, RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
         ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
         long companyId = themeDisplay.getCompanyId();
@@ -233,14 +228,26 @@ public class EnterEmailAction extends PortletAction {
 
         renderResponse.setTitle(themeDisplay.translate("linkedin.enter-email"));
 
-        return mapping.findForward("portlet.login.enter_email");
-    }
+        ComponentContext componentContext = new ComponentContext();
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put(PORTLET_CONTENT, LINKED_IN_JSP_PATH);
+        componentContext.addAll(paramMap);
+        renderRequest.setAttribute(ComponentConstants.COMPONENT_CONTEXT, componentContext);
 
+        return COMMON_JSP_PATH;
+    }
 
     public static final String ACTION               = "action";
     public static final String EMAIL_PARAMETER      = "email";
     public static final String ENTER_EMAIL_ACTION   = "enter_email";
     public static final String REDIRECT_PARAMETER   = "redirect";
 
+    public static final String DEFAULT_PASSWORD = "1111";
+    public static final String JOB_COMPANY_SEPARATOR = " at ";
+
+    public static final String COMMON_JSP_PATH = "/common/themes/portlet.jsp";
+    public static final String LINKED_IN_JSP_PATH = "/portlet/login/enter_email_linkedin.jsp";
+
+    public static final String PORTLET_CONTENT = "portlet_content";
 }
 

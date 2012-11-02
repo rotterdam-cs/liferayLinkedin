@@ -30,4 +30,12 @@ public class PropsValuesExt {
 
     public static final boolean LINKEDIN_CONNECT_AUTH_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeysExt.LINKEDIN_CONNECT_AUTH_ENABLED));
 
+
+    public static final String TWITTER_CONNECT_APP_ID = PropsUtil.get(PropsKeysExt.TWITTER_CONNECT_APP_ID);
+
+    public static final String TWITTER_CONNECT_APP_SECRET = PropsUtil.get(PropsKeysExt.TWITTER_CONNECT_APP_SECRET);
+
+    public static final String TWITTER_REDIRECT_URL = PropsUtil.get(PropsKeysExt.TWITTER_REDIRECT_URL);
+
+    public static final boolean TWITTER_CONNECT_AUTH_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeysExt.TWITTER_CONNECT_AUTH_ENABLED));
 }

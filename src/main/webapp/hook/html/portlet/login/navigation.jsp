@@ -7,6 +7,9 @@
 <%@ page import="com.google.code.linkedinapi.client.LinkedInApiClientFactory" %>
 <%@ page import="com.google.code.linkedinapi.schema.Person" %>
 <%@ page import="com.liferay.portal.util.PortletKeys" %>
+<%@ page import="com.liferay.portal.kernel.twitter.TwitterConnectUtil" %>
+<%@ page import="twitter4j.auth.RequestToken" %>
+<%@ page import="twitter4j.Twitter" %>
 <%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
@@ -47,12 +50,17 @@ if (!strutsAction.startsWith("/login/facebook_connect") && FacebookConnectUtil.i
 }
 
 /*==== PATCH Linked In ====*/
+    boolean showLinkedInIcon = false;
+    if (!strutsAction.startsWith("/login/enter_email") && LinkedInConnectUtil.isEnabled(company.getCompanyId())) {
+        showLinkedInIcon = true;
+    }
+/*===============*/
 
-boolean showLinkedInIcon = false;
-if (!strutsAction.startsWith("/login/enter_email") && LinkedInConnectUtil.isEnabled(company.getCompanyId())) {
-	showLinkedInIcon = true;
-}
-
+/*==== PATCH Twitter ====*/
+    boolean showTwitterInIcon = false;
+    if (!strutsAction.startsWith("/login/twitter") && TwitterConnectUtil.isEnabled(company.getCompanyId())) {
+        showTwitterInIcon = true;
+    }
 /*===============*/
 
 boolean showForgotPasswordIcon = false;
@@ -129,6 +137,44 @@ if (Validator.isNotNull(strutsAction) && !strutsAction.equals("/login/login")) {
 					url="<%= taglibOpenFacebookConnectLoginWindow %>"
 				/>
 			</c:if>
+
+            <%-- ==== PATCH Twitter ==== --%>
+            <c:if test="<%= showTwitterInIcon %>">
+                <%
+                    //base redirect URL
+                    String twitterRedirectURL = TwitterConnectUtil.getRedirectURL(themeDisplay.getCompanyId());
+
+                    //set URL parameters
+                    twitterRedirectURL = HttpUtil.addParameter(twitterRedirectURL, "p_p_id", PortletKeys.LOGIN);
+                    twitterRedirectURL = HttpUtil.addParameter(twitterRedirectURL, "p_p_state", "normal");
+                    twitterRedirectURL = HttpUtil.addParameter(twitterRedirectURL, "p_p_mode", "view");
+
+                    String twitterStrutsActionParameter = "_" + PortletKeys.LOGIN + "_struts_action";
+                    String twitterStrutsActionValue = "/login/twitter";
+
+                    twitterRedirectURL = HttpUtil.addParameter(twitterRedirectURL, twitterStrutsActionParameter, twitterStrutsActionValue);
+
+                    Twitter twitter = TwitterConnectUtil.getTwitter(themeDisplay.getCompanyId());
+
+                    RequestToken twitterRequestToken = TwitterConnectUtil.getTwitterRequestToken(twitter, twitterRedirectURL);
+
+                    session.setAttribute("twitter", twitter);
+                    session.setAttribute("twitterRequestToken", twitterRequestToken);
+
+                    String twitterAuthUrl = twitterRequestToken.getAuthorizationURL();
+                %>
+
+                <portlet:renderURL var="twitterLoginRedirectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+                    <portlet:param name="struts_action" value="/login/login_redirect" />
+                </portlet:renderURL>
+                <li>
+                    <a href="#" onclick="window.location.href = '<%= twitterAuthUrl %>'">
+                        <img src='<%= themeDisplay.getPathThemeImages() + "/twitter/twitter.jpg" %>' alt="Twitter" />
+                        Twitter
+                    </a>
+                </li>
+            </c:if>
+            <%-- ========================== --%>
 
             <%-- ==== PATCH Linked In ==== --%>
             <c:if test="<%= showLinkedInIcon %>">

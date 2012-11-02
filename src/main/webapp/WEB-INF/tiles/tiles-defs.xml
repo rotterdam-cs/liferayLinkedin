@@ -832,10 +832,14 @@
 	
 
 	<!-- PATCH -->
-	<definition name="portlet.login.enter_email" extends="portlet.login">
-		<put name="portlet_content" value="/portlet/login/enter_email_linkedin.jsp" />
-	</definition>	
-	<!-- 	 -->
+    <definition name="portlet.login.enter_email" extends="portlet.login">
+        <put name="portlet_content" value="/portlet/login/enter_email_linkedin.jsp" />
+    </definition>
+
+    <definition name="portlet.login.twitter" extends="portlet.login">
+        <put name="portlet_content" value="/portlet/login/enter_email_twitter.jsp" />
+    </definition>
+    <!-- 	 -->
 
 	<definition name="portlet.login.login" extends="portlet.login">
 		<put name="portlet_content" value="/portlet/login/login.jsp" />

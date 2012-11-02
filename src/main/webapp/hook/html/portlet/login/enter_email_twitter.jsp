@@ -1,40 +1,40 @@
 <%@ include file="/html/portlet/login/init.jsp" %>
 
 <style type="text/css">
-	.navigation {
-		background: #eee;
-		border-top: 1px solid #BFBFBF;
-		padding: 10px;
-	}
+    .navigation {
+        background: #eee;
+        border-top: 1px solid #BFBFBF;
+        padding: 10px;
+    }
 
-    .linkedin-welcome {
+    .twitter-welcome {
         margin: 5px;
         font-size: 12pt;
         width: 420px;
         text-align: center;
     }
 
-    .linkedin-hint {
+    .twitter-hint {
         color: gray;
         font-size: 10pt;
         width: 420px;
         text-align: center;
     }
 
-    .linkedin-form-body {
+    .twitter-form-body {
         overflow: hidden;
         clear: both;
         width: 420px;
     }
 
-    .linkedin-left {
+    .twitter-left {
         float: left;
         text-align: right;
         margin: 5px;
         width: 200px;
     }
 
-    .linkedin-right {
+    .twitter-right {
         float: right;
         text-align: left;
         margin: 5px;
@@ -42,21 +42,21 @@
     }
 
 
-    .linkedin-form-footer {
+    .twitter-form-footer {
         width: 420px;
         text-align: center;
     }
 
-    .linkedin-form-footer input {
+    .twitter-form-footer input {
         margin-bottom: 20px;
     }
 </style>
 
-<portlet:actionURL var="enterEmailURL">
-	<portlet:param name="saveLastPath" value="0" />
-	<portlet:param name="action" value="enter_email" />
-	<portlet:param name="redirect" value="/web/guest/home" />
-	<portlet:param name="struts_action" value="/login/enter_email" />
+<portlet:actionURL var="confirmTwitterURL">
+    <portlet:param name="saveLastPath" value="0" />
+    <portlet:param name="action" value="confirm_twitter" />
+    <portlet:param name="redirect" value="/web/guest/home" />
+    <portlet:param name="struts_action" value="/login/twitter" />
 </portlet:actionURL>
 
 <c:if test="${errorMsg ne null}">
@@ -65,31 +65,23 @@
     </div>
 </c:if>
 
-<c:if test="${successMsg ne null}">
-    <div class="successMsg">
-        ${successMsg}
+<c:if test="${twitterUser ne null}">
+    <div class="twitter-welcome">
+        Welcome, ${twitterUser.name}!
     </div>
-</c:if>
-
-<c:if test="${person ne null}">
-
-    <div class="linkedin-welcome">
-        Welcome, ${person.firstName} ${person.lastName}!
-    </div>
-    <div class="linkedin-hint">
+    <div class="twitter-hint">
         Please, specify your email below:
     </div>
-
-    <form action="${enterEmailURL}" method="post">
-        <div class="linkedin-form-body">
-            <div class="linkedin-left">
+    <form action="${confirmTwitterURL}" method="post">
+        <div class="twitter-form-body">
+            <div class="twitter-left">
                 E-Mail:
             </div>
-            <div class="linkedin-right">
+            <div class="twitter-right">
                 <input type="text" name="email" />
             </div>
         </div>
-        <div class="linkedin-form-footer">
+        <div class="twitter-form-footer">
             <input type="submit" value="Send" />
         </div>
     </form>

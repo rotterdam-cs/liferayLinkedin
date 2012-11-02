@@ -1,5 +1,6 @@
 <%@ page import="com.liferay.portal.kernel.linkedin.LinkedInConnectUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.PropsKeysExt" %>
+<%@ page import="com.liferay.portal.kernel.twitter.TwitterConnectUtil" %>
 <%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
@@ -46,11 +47,18 @@ String facebookConnectOauthTokenURL = FacebookConnectUtil.getAccessTokenURL(comp
 String facebookConnectRedirectURL = FacebookConnectUtil.getRedirectURL(company.getCompanyId());
 
 
-/*=== PATCH ===*/
+/*=== PATCH LinkedIn ===*/
 boolean linkedInAuthEnabled = LinkedInConnectUtil.isEnabled(company.getCompanyId());
 String linkedInAppId = LinkedInConnectUtil.getAppId(company.getCompanyId());
 String linkedInAppSecret = LinkedInConnectUtil.getAppSecret(company.getCompanyId());
 String linkedInRedirectURL = LinkedInConnectUtil.getRedirectURL(company.getCompanyId());
+/*============*/
+
+/*=== PATCH Twitter ===*/
+boolean twitterAuthEnabled = TwitterConnectUtil.isEnabled(company.getCompanyId());
+String twitterAppId = TwitterConnectUtil.getAppId(company.getCompanyId());
+String twitterAppSecret = TwitterConnectUtil.getAppSecret(company.getCompanyId());
+String twitterRedirectURL = TwitterConnectUtil.getRedirectURL(company.getCompanyId());
 /*============*/
 
 boolean ntlmAuthEnabled = PrefsPropsUtil.getBoolean(company.getCompanyId(), PropsKeys.NTLM_AUTH_ENABLED, PropsValues.NTLM_AUTH_ENABLED);
@@ -82,7 +90,7 @@ String siteminderUserHeader = PrefsPropsUtil.getString(company.getCompanyId(), P
 <h3><liferay-ui:message key="authentication" /></h3>
 
 <liferay-ui:tabs
-	names="general,ldap,cas,facebook,linkedin,ntlm,open-id,open-sso,siteminder"
+	names="general,ldap,cas,facebook,linkedin,twitter,ntlm,open-id,open-sso,siteminder"
 	refresh="<%= false %>"
 >
 	<liferay-ui:section>
@@ -166,9 +174,9 @@ String siteminderUserHeader = PrefsPropsUtil.getString(company.getCompanyId(), P
 		</aui:fieldset>
 	</liferay-ui:section>
 
-    <%--==== PATCH ====--%>
-	<liferay-ui:section>
-		<aui:fieldset>
+    <%--==== PATCH LinkedIn ====--%>
+    <liferay-ui:section>
+        <aui:fieldset>
             <aui:input inlineLabel="left" label="enabled" name='<%= "settings--" + PropsKeysExt.LINKEDIN_CONNECT_AUTH_ENABLED + "--" %>' type="checkbox" value="<%= linkedInAuthEnabled %>" />
 
             <aui:input cssClass="lfr-input-text-container" label="application-id" name='<%= "settings--" + PropsKeysExt.LINKEDIN_CONNECT_APP_ID + "--" %>' type="text" value="<%= linkedInAppId %>" />
@@ -176,8 +184,22 @@ String siteminderUserHeader = PrefsPropsUtil.getString(company.getCompanyId(), P
             <aui:input cssClass="lfr-input-text-container" label="application-secret" name='<%= "settings--" + PropsKeysExt.LINKEDIN_CONNECT_APP_SECRET + "--" %>' type="text" value="<%= linkedInAppSecret %>" />
 
             <aui:input cssClass="lfr-input-text-container" label="redirect-url" name='<%= "settings--" + PropsKeysExt.LINKEDIN_REDIRECT_URL + "--" %>' type="text" value="<%= linkedInRedirectURL %>" />
-		</aui:fieldset>
-	</liferay-ui:section>
+        </aui:fieldset>
+    </liferay-ui:section>
+    <%--================--%>
+
+    <%--==== PATCH Twitter ====--%>
+    <liferay-ui:section>
+        <aui:fieldset>
+            <aui:input inlineLabel="left" label="enabled" name='<%= "settings--" + PropsKeysExt.TWITTER_CONNECT_AUTH_ENABLED + "--" %>' type="checkbox" value="<%= twitterAuthEnabled %>" />
+
+            <aui:input cssClass="lfr-input-text-container" label="application-id" name='<%= "settings--" + PropsKeysExt.TWITTER_CONNECT_APP_ID + "--" %>' type="text" value="<%= twitterAppId %>" />
+
+            <aui:input cssClass="lfr-input-text-container" label="application-secret" name='<%= "settings--" + PropsKeysExt.TWITTER_CONNECT_APP_SECRET + "--" %>' type="text" value="<%= twitterAppSecret %>" />
+
+            <aui:input cssClass="lfr-input-text-container" label="redirect-url" name='<%= "settings--" + PropsKeysExt.TWITTER_REDIRECT_URL + "--" %>' type="text" value="<%= twitterRedirectURL %>" />
+        </aui:fieldset>
+    </liferay-ui:section>
     <%--================--%>
 
     <liferay-ui:section>

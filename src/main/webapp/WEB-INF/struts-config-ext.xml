@@ -4,9 +4,13 @@
 <struts-config>
 	<action-mappings>
 
-        <action path="/login/enter_email" type="com.liferay.portlet.login.action.EnterEmailAction">
-			<forward name="portlet.login.enter_email" path="portlet.login.enter_email" />
-		</action>
+<!--        <action path="/login/enter_email" type="com.liferay.portlet.login.action.LinkedInAuthAction">
+            <forward name="portlet.login.enter_email" path="portlet.login.enter_email" />
+        </action>
+
+        <action path="/login/twitter" type="com.liferay.portlet.login.action.TwitterAuthAction">
+            <forward name="portlet.login.twitter" path="portlet.login.twitter" />
+        </action>-->
 
 	</action-mappings>
 </struts-config>
