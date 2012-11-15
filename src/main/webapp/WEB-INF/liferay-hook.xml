@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hook PUBLIC "-//Liferay//DTD Hook 6.1//EN" "http://www.liferay.com/dtd/liferay-hook_6_1_0.dtd">
-
 <hook>
 
     <portal-properties>portal-ext.properties</portal-properties>
-
-    <language-properties>content/Language.properties</language-properties>
-
+    <language-properties>content/messages.properties</language-properties>
     <custom-jsp-dir>/hook</custom-jsp-dir>
-
-    <struts-action>
-        <struts-action-path>/login/enter_email</struts-action-path>
-        <struts-action-impl>com.liferay.portlet.login.action.LinkedInAuthAction</struts-action-impl>
-    </struts-action>
-
-    <struts-action>
-        <struts-action-path>/login/twitter</struts-action-path>
-        <struts-action-impl>com.liferay.portlet.login.action.TwitterAuthAction</struts-action-impl>
-    </struts-action>
 
 </hook>

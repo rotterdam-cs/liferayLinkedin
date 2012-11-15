@@ -1,0 +1,304 @@
+/*-----------------------Login Portlet-------------------------*/
+.login-portlet {
+    color: #376A95;
+    margin: 50px auto;
+    width: 567px;
+}
+
+.login-portlet .titleLogin h2 {
+    color: #3A6B94;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 2px 0;
+    text-indent: 20px;
+}
+
+.login-portlet .leftSide {
+    float: left;
+    padding: 10px 12px 10px 0;
+    width: 160px;
+}
+
+.login-portlet .rightSide {
+    background: transparent url(../images/border-bg.png) repeat-y 0 0;
+    float: left;
+    height: 100%;
+    padding: 10px 0 0 30px;
+    width: 332px;
+}
+
+.login-portlet .checkLogin {
+    font-weight: bold;
+    margin: 30px 20px 0 0;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.checkLogin * {
+    vertical-align: middle;
+}
+
+.login-portlet a {
+    font-weight: bold;
+}
+
+.login-portlet .pointer {
+    cursor: pointer;
+}
+
+.login-portlet .leftSide a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+.login-portlet .rightSide {
+    background: url("../images/border-bg.png") repeat-y scroll 0 0 transparent;
+    float: right;
+    height: 100%;
+    padding: 10px 0 0 30px;
+    width: 300px;
+}
+
+.login-portlet .rightSide label {
+    display: block;
+    font-weight: bold;
+}
+
+.login-portlet .rightSide .rowInput {
+    margin: 0 0 20px;
+}
+
+.login-portlet .rightSide .inputField.error {
+    background: transparent url(../images/input-text-bg-error.png) no-repeat 0 0;
+    display: block;
+}
+
+.login-portlet .rightSide .inputField {
+    background: transparent url(../images/input-text-bg.png) no-repeat 0 0;
+    width: 205px;
+    height: 33px;
+}
+
+.login-portlet .rightSide .inputFieldSmall.error {
+    background: transparent url(../images/input-text-bg-error-small.png) no-repeat 0 0;
+}
+
+.login-portlet .rightSide .inputFieldSmall {
+    background: transparent url(../images/input-text-bg-small.png) no-repeat 0 0;
+    width: 135px;
+    height: 33px;
+}
+
+.login-portlet .rightSide .inputField input {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    margin: 10px 5px;
+    padding: 0;
+    width: 195px;
+}
+
+.login-portlet .rightSide .inputFieldSmall input {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    margin: 10px 5px;
+    padding: 0;
+    width: 125px;
+}
+
+.login-portlet .lineButton {
+    bottom: 46px;
+    right: 55px;
+    text-align: right;
+}
+
+.login-portlet .lineButton .buttonLogin {
+    background: url("../images/linkButton.png") no-repeat scroll 0 50% transparent;
+    padding: 12px 0 12px 40px;
+    text-decoration: none;
+}
+
+.login-portlet .stampaLogin {
+    background: url("../images/stampa-login.png") no-repeat scroll 50% 0 transparent;
+    float: right;
+    padding: 64px 20px 0;
+    position: absolute;
+    right: 30px;
+    text-decoration: none;
+    vertical-align: bottom;
+}
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/*-------------------Password check------------------------*/
+.infoText {
+    float: right;
+}
+
+/*------------------Login error----------------------------*/
+
+.error_text {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
+
+input[type="text"].error {
+    background: #D3000F none;
+}
+
+.login-portlet .redMessage {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+
+/*---------- Navigation --------------*/
+.login-portlet #login_navigation {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    width: 100%;
+}
+
+.login-portlet #login_navigation ul {
+    list-style-type: none;
+}
+
+.login-portlet #login_navigation ul li {
+    margin: 10px;
+    padding: 10px;
+    display: inline;
+}
+
+.login-portlet #login_navigation ul li a {
+    font-size: 12pt;
+    text-decoration: none;
+    color: #8fadd9;
+}
+
+.login-portlet #login_navigation ul li a:hover {
+    font-size: 12pt;
+    text-decoration: underline;
+    color: #495970;
+}
+
+
+
+/*--- LinkedIn, Twitter ----*/
+.linkedInHeader, .twitterHeader {
+    margin: 5px;
+    padding: 5px;
+    text-align: left;
+    display: block;
+}
+
+
+.linkedInHeader h1, .twitterHeader h1 {
+    color: #5684cc;
+    display: inline;
+    font-size: 14pt;
+}
+
+.linkedin-welcome {
+    color: navy;
+    font-size: 12pt;
+    display: block;
+}
+
+.linkedin-hint {
+    color: #494949;
+    font-size: 10pt;
+    font-style: italic;
+    text-align: left;
+}
+
+#linkedInLoginForm, #twitterLoginForm {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.linkedin-form-body {
+    display: block;
+    text-align: left;
+    overflow: hidden;
+    clear: both;
+}
+
+.linkedin-form-body .linkedin-left {
+    display: inline;
+    text-align: right;
+    padding: 5px 10px;
+}
+
+.linkedin-form-body .linkedin-right {
+    display: inline;
+    text-align: left;
+    padding: 5px 10px;
+}
+
+
+.linkedin-form-footer {
+    display: block;
+    text-align: left;
+}
+
+.linkedin-form-footer #loginLinkedIn,
+.linkedin-form-footer #loginTwitter {
+    background: none repeat scroll 0 0 white;
+    color: navy;
+    margin: 10px;
+}
+
+/*---- Preferences ----*/
+
+#preferencesForm {
+    color: #466CA1;
+    font-size: 9pt;
+    margin: 5px;
+    min-height: 350px;
+    padding: 5px;
+    text-align: left;
+}
+
+#preferencesForm .formLine {
+    display: block;
+    margin: 2px 10px;
+    padding: 5px;
+    clear: both;
+}
+
+
+#preferencesForm .formLine label {
+    display: inline;
+    float: left;
+    width: 150px;
+}
+
+
+#preferencesForm .formLine input[type="checkbox"] {
+    display: inline;
+    float: left;
+    margin: 6px;
+    width: 300px;
+}
+
+
+#preferencesForm .formLine input[type="text"] {
+    display: inline;
+    float: left;
+    margin: 2px;
+    width: 300px;
+}
+
+#preferencesForm input[type="submit"] {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #3A5380;
+}
+
+

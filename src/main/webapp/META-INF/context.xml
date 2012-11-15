@@ -1,3 +1,0 @@
-<Context reloadable="true" path="/linkedin-hook">
-    <Loader loaderClass="com.liferay.support.tomcat.loader.PortalClassLoader"/>
-</Context>
