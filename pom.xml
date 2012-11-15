@@ -124,6 +124,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.sun.jersey.samples</groupId>
+            <artifactId>oauth-client-twitter</artifactId>
+            <version>1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>[2.2,)</version>
+        </dependency>
+
+        <dependency>
             <groupId>oauth.signpost</groupId>
             <artifactId>signpost-core</artifactId>
             <version>1.2.1.1</version>
