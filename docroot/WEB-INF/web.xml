@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+           version="2.5">
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>WEB-INF/src/spring/*.xml</param-value>
+        <!-- <param-value>classpath:spring/spring-*.xml</param-value> -->        
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+
+    <servlet>
+        <servlet-name>ViewRendererServlet</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.ViewRendererServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ViewRendererServlet</servlet-name>
+        <url-pattern>/WEB-INF/servlet/view</url-pattern>
+    </servlet-mapping>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://java.sun.com/jstl/core_rt</taglib-uri>
+            <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://java.sun.com/portlet_2_0</taglib-uri>
+            <taglib-location>/WEB-INF/tld/liferay-portlet.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://liferay.com/tld/ui</taglib-uri>
+            <taglib-location>/WEB-INF/tld/liferay-ui.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+</web-app>
