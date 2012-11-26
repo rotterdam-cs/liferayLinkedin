@@ -1,9 +1,7 @@
 package com.aimprosoft.portlet.login;
 
-import com.aimprosoft.common.config.ApplicationPropsBean;
 import com.aimprosoft.portlet.login.model.LoginPreferences;
 import com.aimprosoft.portlet.login.util.LoginPreferencesUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,8 +17,15 @@ import javax.portlet.RenderRequest;
 @SessionAttributes("messages")
 public class LoginEditController {
 
-    @Autowired
-    private ApplicationPropsBean props;
+    //private ApplicationPropsBean props = ObjectFactory.getBean(ApplicationPropsBean.class);
+
+    /*ublic ApplicationPropsBean getProps() {
+        return props;
+    }
+
+    public void setProps(ApplicationPropsBean props) {
+        this.props = props;
+    }*/
 
     @RequestMapping
     public Object view(RenderRequest renderRequest) {

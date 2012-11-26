@@ -15,17 +15,6 @@
         </property>
     </bean>
 
-    <bean name="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/html/portlet" />
-        <property name="suffix" value=".jsp" />
-        <property name="exposeContextBeansAsAttributes" value="true" />
-        <property name="exposedContextBeanNames">
-            <list>
-                <value>props</value>
-            </list>
-        </property>
-    </bean>
-
     <bean name="exceptionResolver" class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
         <!--<property name="defaultErrorView" value="/error"/>-->
         <property name="exceptionMappings">

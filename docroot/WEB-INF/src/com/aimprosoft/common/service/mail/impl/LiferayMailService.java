@@ -4,9 +4,11 @@ import com.aimprosoft.common.exception.MailException;
 import com.aimprosoft.common.service.mail.MailService;
 import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
+import org.springframework.stereotype.Component;
 
 import javax.mail.internet.InternetAddress;
 
+@Component
 public class LiferayMailService implements MailService {
 
     public void sendEmail(String from, String to, String subject, String content) throws MailException {

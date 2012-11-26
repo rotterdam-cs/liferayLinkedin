@@ -1,9 +1,9 @@
 package com.aimprosoft.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service("props")
+@Component("props")
 public class ApplicationPropsBean {
 
     @Value("${login.portlet.registration.email.from}")

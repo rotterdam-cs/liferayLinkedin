@@ -2,7 +2,8 @@ package com.aimprosoft.portlet.login;
 
 
 import com.aimprosoft.common.config.ApplicationPropsBean;
-import com.aimprosoft.common.service.mail.MailService;
+import com.aimprosoft.common.service.mail.impl.LiferayMailService;
+import com.aimprosoft.common.spring.ObjectFactory;
 import com.aimprosoft.common.util.JacksonJsonViewHelper;
 import com.aimprosoft.common.util.MessagesHelper;
 import com.aimprosoft.portlet.login.model.LoginConstants;
@@ -36,7 +37,6 @@ import com.liferay.util.ContentUtil;
 import oauth.signpost.OAuth;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -64,12 +64,9 @@ public class LoginController {
 
     private Logger _logger = Logger.getLogger(getClass());
 
-    @Autowired
-    private ApplicationPropsBean props;
+    private ApplicationPropsBean props = null;
 
-    @Autowired
-    private MailService mailService;
-
+    private LiferayMailService mailService = null;
 
     public static final String SUCCESS_MSG = "successMsg";
     public static final String ERROR_MSG = "errorMsg";
@@ -162,6 +159,7 @@ public class LoginController {
         }
 
         return new ModelAndView("/login/view/index", modelMap);
+//        return new ModelAndView("/html/portlet/login/view/index.jsp", modelMap);
     }
 
 
@@ -792,8 +790,8 @@ public class LoginController {
 
     private void sendMailNotification(String mail, User user, String password) throws Exception {
 
-        String from = props.getRegistrationEmailFrom();
-        String subject = props.getRegistrationEmailSubject();
+        String from = getProps().getRegistrationEmailFrom();
+        String subject = getProps().getRegistrationEmailSubject();
 
         String template = ContentUtil.get("./template/email/welcome-new-user-template.vm");
 
@@ -810,7 +808,7 @@ public class LoginController {
                 }
         );
 
-        mailService.sendEmail(from, mail, subject, template);
+        getMailService().sendEmail(from, mail, subject, template);
     }
 
     @SuppressWarnings("unchecked")
@@ -884,6 +882,18 @@ public class LoginController {
         }
 
         return user;
+    }
+
+    private ApplicationPropsBean getProps(){
+        if(this.props!=null)
+            return props;
+        return ObjectFactory.getBean(ApplicationPropsBean.class);
+    }
+
+    private LiferayMailService getMailService(){
+        if(this.mailService!=null)
+            return mailService;
+        return ObjectFactory.getBean(LiferayMailService.class);
     }
 
     public static final String DEFAULT_PASSWORD = "1111";
